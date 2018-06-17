@@ -1,5 +1,5 @@
 ---
-title: "Test Scores Report"
+title: "Activity — Reproducible Analysis with R"
 output: pdf_document
 ---
 
@@ -7,7 +7,7 @@ output: pdf_document
 knitr::opts_chunk$set(echo = FALSE)
 library(tidyverse)
 library(knitr)
-data <- read_csv("https://raw.githubusercontent.com/stenhaug/sdp_workshop/master/ECLS_Sample_1.csv")
+data <- read_csv("https://raw.githubusercontent.com/stenhaug/workshop_reproducible_analysis_with_R/master/data/ECLS_Sample_1.csv")
 ```
 
 # Understanding the data
