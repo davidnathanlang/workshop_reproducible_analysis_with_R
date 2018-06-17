@@ -1,0 +1,82 @@
+---
+title: "Test Scores Report"
+output: pdf_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+library(knitr)
+data <- read_csv("https://raw.githubusercontent.com/stenhaug/sdp_workshop/master/ECLS_Sample_1.csv")
+```
+
+# Understanding the data
+
+There are `r nrow(data)` students in the data. These students have a total of `r n_distinct(data$teach_id)` unique teachers and `r n_distinct(data$school_id)` unique schools.
+
+Let's take a peek at the data:
+
+```{r}
+kable(head(data))
+```
+
+Let's see how many times each of the top 10 most common schools show up in the data
+
+```{r, echo = TRUE}
+data %>% 
+  count(school_id, sort = TRUE) %>% 
+  slice(1:10) %>% 
+  kable()
+```
+
+# Relationship between lit and math pretests
+
+```{r, warning = FALSE, message = FALSE}
+data %>% 
+  ggplot(aes(x = lit_pretest, y = math_pretest)) +
+  geom_point() +
+  geom_smooth() +
+  labs(x = "Lit Pretest", y = "Math Pretest", title = "Positive relationship between pretests")
+```
+
+# Growth
+
+## Histograms of growth
+
+```{r, warning = FALSE, message = FALSE}
+hist(data$lit_posttest / data$lit_pretest, xlab = "Multiplier", ylab = "Count", main = "Lit Growth")
+```
+
+```{r, warning = FALSE, message = FALSE}
+hist(data$math_posttest / data$math_pretest, xlab = "Multiplier", ylab = "Count", main = "Math Growth")
+```
+
+## Relationship between growth
+
+```{r, warning = FALSE, message = FALSE}
+data_with_growth <- data %>% 
+  mutate(lit_growth = lit_posttest / lit_pretest,
+         math_growth = math_posttest / math_pretest) 
+
+data_with_growth %>% 
+  ggplot(aes(x = lit_growth, y = math_growth)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+## Predicting math growth based on covariates
+
+```{r}
+model_math_growth <- lm(math_growth ~ ses + female + black + hisp + asian, data = data_with_growth)
+
+summary(model_math_growth)
+```
+
+For example, the model finds that the coefficient on SES is `r round(summary(model_math_growth)$coef[2, 1], 2)`. This tells us that...
+
+# Ideas for things to add
+
+- Model lit growth as well
+- Only some covariates were included, can you include other covariates?
+- Can you turn the insights from the model into crisp visualizations?
+
