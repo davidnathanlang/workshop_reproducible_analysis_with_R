@@ -1,7 +1,7 @@
 # workshop_reproducible_analysis_with_R
 Workshop on Reproducible Analysis with R given at Harvard’s Strategic Data Project 2018 Annual Convening.
 
-Content:
+## Content
 
 [1. Installation Instructions — Reproducible Analysis with R](https://docs.google.com/document/d/1FIW0kuIDWLYDO2a1DUJXS7BAqdA5fHlEO7qMrWI_ByE/edit)
 
